@@ -90,7 +90,7 @@ def main(byData='中位數', numData=100, ascending=False):
 	#print(df100)
 
 	data = readDataFromJson()
-	stats = pd.DataFrame(columns=['縣市', '鄉鎮市區', '村里', '納稅單位', '平均數', '中位數', 
+	stats = pd.DataFrame(columns=['縣市', '鄉鎮市區', '村里', '納稅單位', '綜合所得總額', '平均數', '中位數', 
 		'第17案同意票數', '第17案有效票數', '第17案同意率',
 		'第18案同意票數', '第18案有效票數', '第18案同意率',
 		'第19案同意票數', '第19案有效票數', '第19案同意率',
@@ -100,7 +100,7 @@ def main(byData='中位數', numData=100, ascending=False):
 		count[themeId] = {}
 		count[themeId]['valid'], count[themeId]['agree'], count[themeId]['disagree'] = 0, 0, 0
 	for index, row in df100.iterrows():
-		cur = row.iloc[[0,1,2,3,5,6]]
+		cur = row.iloc[[0,1,2,3,4,5,6]]
 		for themeId in range(17, 21):
 			try:
 				votes = data[themeId][row['﻿縣市']][row['鄉鎮市區']][row['村里']]
@@ -118,7 +118,7 @@ def main(byData='中位數', numData=100, ascending=False):
 		stats = stats.append(cur, ignore_index=True)
 
 	stats['縣市'] = stats['﻿縣市'] # Duplicate, unknown error
-	stats.drop(stats.columns[[18]], axis=1, inplace=True)
+	stats.drop(stats.columns[[19]], axis=1, inplace=True)
 
 	total = pd.Series([stats['第17案同意票數'].sum(), stats['第17案有效票數'].sum(), round(stats['第17案同意票數'].sum() / stats['第17案有效票數'].sum(), 4), 
 						stats['第18案同意票數'].sum(), stats['第18案有效票數'].sum(), round(stats['第18案同意票數'].sum() / stats['第18案有效票數'].sum(), 4), 
@@ -138,4 +138,4 @@ def main(byData='中位數', numData=100, ascending=False):
 	plot(count, saveName=saveName)
 
 if __name__ == '__main__':
-	main(byData='中位數', numData=100, ascending=False)
+	main(byData='平均數', numData=100, ascending=True)
