@@ -45,6 +45,8 @@ def readDataFromJson():
 	data = {}
 	if not os.path.isdir('./data'):
 		os.mkdir('./data')
+	if not os.path.isdir('./output'):
+		os.mkdir('./output')
 	for themeId in range(17, 21):
 		if os.path.exists('./data/data{}.json'.format(themeId)):
 			with open('./data/data{}.json'.format(themeId), encoding='utf-8') as f:
@@ -77,7 +79,7 @@ def plot(count,saveName):
 				 y=(y_loc-proportion)+(proportion/2),
 				 s=f'{np.round(proportion*100, 2)}%', 
 				 color="black", fontsize=12, fontweight="bold")
-	plt.savefig("{}.png".format(saveName))
+	plt.savefig("./output/{}.png".format(saveName))
 	plt.show()
 
 def main(byData='中位數', numData=100, ascending=False):
@@ -133,9 +135,9 @@ def main(byData='中位數', numData=100, ascending=False):
 
 	order = "前" if not ascending else "後"
 	saveName = "{}{}{}".format(byData, order, numData)
-	stats.to_csv("{}{}{}.csv".format(byData, order, numData))
+	stats.to_csv("./output/{}{}{}.csv".format(byData, order, numData))
 
 	plot(count, saveName=saveName)
 
 if __name__ == '__main__':
-	main(byData='平均數', numData=100, ascending=True)
+	main(byData='中位數', numData=100, ascending=False)
